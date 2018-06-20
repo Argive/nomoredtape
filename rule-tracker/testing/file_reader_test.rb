@@ -1,14 +1,3 @@
-# class Rule
-#   attr_reader :title, :code
-#   attr_accessor :status
-#
-#   def initialize(title, code, status)
-#     @title = title
-#     @code = code
-#     @status = status
-#   end
-# end
-
 def final_orders_parser(file)
   lines = File.open(file).to_a
   file_name = File.basename(file, ".txt")
@@ -18,23 +7,21 @@ def final_orders_parser(file)
   lines.each_with_index do |line, idx|
     if line.include?("is amended.")
       if line.include?("CSR")
-        key_line = line.split(" is amended.").first
+        key_line = line
       else
-        combined_lines = lines[idx - 1].gsub("\n", " ") + line
-        key_line = combined_lines.split(" is amended.").first
+        key_line = lines[idx - 1].gsub("\n", " ") + line
       end
 
-      all_rules.push(create_rule(key_line, "amend", file_name))
+      all_rules.push(create_rule(key_line, "amend", "final_order", file_name))
 
     elsif line.include?("is rescinded.")
       if line.include?("CSR")
-        key_line = line.split(" is rescinded.").first
+        key_line = line
       else
-        combined_lines = lines[idx - 1].gsub("\n", " ") + line
-        key_line = combined_lines.split(" is rescinded.").first
+        key_line = lines[idx - 1].gsub("\n", " ") + line
       end
 
-      all_rules.push(create_rule(key_line, "rescind", file_name))
+      all_rules.push(create_rule(key_line, "rescind", "final_order", file_name))
     end
   end
 
@@ -42,20 +29,35 @@ def final_orders_parser(file)
 end
 
 def proposed_orders_parser(file)
-end 
+  lines = File.open(file).to_a
 
-def create_rule(line, action, file_name)
+  all_rules = []
+
+  lines.each do |line|
+    if line.include?("PROPOSED AMENDMENT")
+      counter += 1
+    elsif line.include?("PROPOSED RECISSION")
+    end
+  end
+
+  puts all_rules
+end
+
+def create_rule(line, action, stage, file_name)
   rule = {}
 
-  split = line.split(" ")
+  if action == "amend"
+    rule["code"], rule["desc"] = line.match(/^(?<CODE>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\s+is amended.$)/).captures
+    rule["proposed_action"] = "amend"
+  elsif action == "rescind"
+    rule["proposed_action"] = "rescind"
+  end
 
-  rule["code"] = split[0..2].join(" ")
-  rule["description"] = split[3..-1].join(" ")
-  rule["proposed_action"] = action == "amend" ? "amend" : "rescind"
-  rule["stage"] = "final_order"
+  rule["stage"] = stage
   rule["source"] = file_name
 
   return rule
 end
 
 final_orders_parser('./files/orders_test_excerpt.txt')
+# proposed_orders_parser('./files/proposed_test_excerpt_short.txt')
