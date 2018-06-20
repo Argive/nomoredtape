@@ -1,9 +1,9 @@
 const deptComments = document.getElementById("dept_comments");
 
 // Thank you, Elias Zamaria!
-// const addCommas = (x) => {
-//   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-// };
+const addCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 
 const deptCommentsChart = new Chart(deptComments, {
   type: 'bar',
@@ -90,6 +90,13 @@ const deptCommentsChart = new Chart(deptComments, {
     }]
   },
   options: {
+    title: {
+      display: true,
+      text: '4550 Public Comments Collected',
+      fontFamily: "'Fjalla One', sans-serif",
+      fontSize: 28,
+      padding: 15
+    },
     maintainAspectRatio: false,
     legend: {
       display: false
@@ -101,7 +108,7 @@ const deptCommentsChart = new Chart(deptComments, {
           autoSkip: false,
           fontFamily: "'Average', 'sans-serif'",
           fontSize: 17,
-          padding: 5
+          padding: 15
         },
         gridLines: {
           display: false
