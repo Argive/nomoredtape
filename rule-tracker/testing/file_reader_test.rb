@@ -76,13 +76,7 @@ def create_rule(line, action, stage, file_name)
     rule["code"], rule["desc"] = line.match(/^(?<CHAPTER>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\. .+$)/).captures
   end
 
-
-  if action == "amend"
-    rule["proposed_action"] = "amend"
-  elsif action =="rescind"
-    rule["proposed_action"] = "rescind"
-  end
-
+  rule["proposed_action"] = action
   rule["stage"] = stage
   rule["source"] = file_name
 
