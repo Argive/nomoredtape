@@ -1,3 +1,4 @@
+require './config.rb'
 
 def final_orders_parser(file)
   lines = File.open(file).to_a
@@ -80,8 +81,21 @@ def create_rule(line, action, stage, file_name)
   rule["stage"] = stage
   rule["source"] = file_name
 
+  add_to_airtable(rule)
   return rule
 end
 
-final_orders_parser('./files/orders_test_excerpt.txt')
+def add_to_airtable(rule)
+  airtableRule = AllSoSData.new(
+    "Rule Citation" => rule["code"],
+    "Rule Description" => rule["desc"],
+    "Action Proposed" => rule["proposed_action"],
+    "Stage" => rule["stage"],
+    "Source" => rule["source"]
+  )
+
+  airtableRule.create
+end
+
+# final_orders_parser('./files/orders_test_excerpt.txt')
 proposed_orders_parser('./files/proposed_test_excerpt_short.txt')

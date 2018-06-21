@@ -1,2 +1,2 @@
-./rule-tracker/testing/config.env
+/rule-tracker/testing/config.rb
 *.env
