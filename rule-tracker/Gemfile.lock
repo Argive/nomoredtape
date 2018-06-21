@@ -1,0 +1,21 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    airrecord (0.2.4)
+      faraday (~> 0.10)
+      net-http-persistent (~> 2.9)
+    byebug (10.0.2)
+    faraday (0.15.2)
+      multipart-post (>= 1.2, < 3)
+    multipart-post (2.0.0)
+    net-http-persistent (2.9.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  airrecord
+  byebug
+
+BUNDLED WITH
+   1.16.1
