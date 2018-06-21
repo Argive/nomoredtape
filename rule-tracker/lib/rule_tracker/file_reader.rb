@@ -65,5 +65,5 @@ def add_to_airtable(rule)
   airtableRule.create
 end
 
-final_orders_parser('./files/orders_test_excerpt.txt')
-# proposed_orders_parser('./files/proposed_test_excerpt_short.txt')
+final_orders_parser('../../data/orders_test_excerpt.txt')
+# proposed_orders_parser('../../data/proposed_test_excerpt_short.txt')
