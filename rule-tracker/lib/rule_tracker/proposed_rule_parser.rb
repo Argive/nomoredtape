@@ -26,7 +26,7 @@ def proposed_rules_parser(file)
 
         action = line.include?("AMENDMENT") ? "Amend" : "Rescind"
 
-        rule_citation, rule_description = key_line.match(/^.*(?<CODE>\d+\s+CSR\s+[-.\d]+)\s*(?<DESCRIPTION>.*?)(?=\. .+$)/).captures
+        rule_citation, rule_description = key_line.match(/^\D*(?<CODE>\d+\s+CSR\s+[-.\d]+)\s*(?<DESCRIPTION>.*?)(?=\. .+$)/).captures
         add_to_airtable(Rule.new(rule_citation, rule_description, action, "Proposed (Formal)", file_name))
 
       rescue => error
@@ -57,8 +57,8 @@ def add_to_airtable(rule)
   airtableRule.create
 end
 
-# proposed_rules_parser('../../data/15-jun-18_proposed-TEST.txt')
-proposed_rules_parser('../../data/error-testing.txt')
+proposed_rules_parser('../../data/15-jun-18_proposed-TEST.txt')
+# proposed_rules_parser('../../data/error-testing.txt')
 
 # required manual edge case override on pg 1277
 # 34(33?) rules recorded on 21-jun-18 test
