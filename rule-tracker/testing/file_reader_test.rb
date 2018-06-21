@@ -17,15 +17,10 @@ def final_orders_parser(file)
         key_line = lines[jdx].gsub("\n", " ") + key_line
       end
 
-      if line.include?("amended")
-        action = "Amend"
-        rule_citation, rule_description = key_line.match(/^(?<CODE>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\s+is amended.$)/).captures
-      elsif line.include?("rescinded")
-        action = "Rescind"
-        rule_citation, rule_description = key_line.match(/^(?<CODE>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\s+is rescinded.$)/).captures
-      end
 
       action = line.include?("amended") ? "Amend" : "Rescind"
+      rule_citation, rule_description = key_line.match(/^(?<CODE>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\s+is #{action.downcase}ed.$)/).captures
+
       add_to_airtable(Rule.new(rule_citation, rule_description, action, "Final Order", file_name))
     end
   end
