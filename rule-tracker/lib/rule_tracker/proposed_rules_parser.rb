@@ -3,7 +3,7 @@
 require_relative 'config'
 require_relative 'Rule'
 
-def final_rules_parser(file)
+def proposed_rules_parser(file)
 
   # The numbers of lines a file should read after keywords
   # before throwing an error and prompting manual review.
@@ -11,23 +11,25 @@ def final_rules_parser(file)
 
   lines = File.open(file).to_a
   file_name = File.basename(file, ".txt")
+  puts "Parsing Proposed Rules in #{file_name} ..."
 
   lines.each_with_index do |line, idx|
-    if line.include?("is amended.") || line.include?("is rescinded.")
+    if line.include?("PROPOSED AMENDMENT") || line.include?("PROPOSED RECISSION")
       begin
-        key_line = line
         jdx = idx
+        key_line = lines[jdx]
 
-        until key_line.include?("CSR")
-          jdx -= 1
-          key_line = lines[jdx].gsub("\n", " ") + key_line
-          raise "!-- MANUAL REVIEW REQUIRED --!" if idx - jdx >= error_buffer
+        until key_line.include?(". ")
+          jdx += 1
+          key_line = key_line.gsub("\n", " ") + lines[jdx]
+          raise "!-- MANUAL REVIEW REQUIRED --!" if jdx - idx >= error_buffer
         end
 
-        action = line.include?("amended") ? "Amend" : "Rescind"
-        rule_citation, rule_description = key_line.match(/^\D*(?<CODE>\d+\s+CSR\s+[-.\d]+)\s*(?<DESCRIPTION>.*?)(?=\s+is #{action.downcase}ed.+$)/).captures
+        action = line.include?("AMENDMENT") ? "Amend" : "Rescind"
 
-        add_to_airtable(Rule.new(rule_citation, rule_description, action, "Final Order", file_name))
+        rule_citation, rule_description = key_line.match(/^\D*(?<CODE>\d+\s+CSR\s+[-.\d]+)\s*(?<DESCRIPTION>.*?)(?=\. .+$)/).captures
+        add_to_airtable(Rule.new(rule_citation, rule_description, action, "Proposed (Formal)", file_name))
+
       rescue => error
         puts error
         puts "An error has occured on line #{idx} in file #{file_name}."
@@ -40,7 +42,7 @@ def final_rules_parser(file)
     end
   end
 
-  puts "Final rules uploaded to Airtable."
+  puts "Proposed rules uploaded to Airtable."
 end
 
 def add_to_airtable(rule)
@@ -55,6 +57,3 @@ def add_to_airtable(rule)
 
   airtableRule.create
 end
-
-final_rules_parser('../../data/15-jun-18_final-TEST.txt')
-# 118 records created on test 21-jun-18
