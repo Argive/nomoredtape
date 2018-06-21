@@ -1,1 +1,2 @@
 ./rule-tracker/testing/config.env
+*.env
