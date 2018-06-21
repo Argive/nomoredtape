@@ -1,11 +1,13 @@
+# caution! this config file contains private API keys.
+# ensure it remains in .gitignore regardless of file path
 require_relative 'config'
+require_relative 'Rule'
 
 def final_orders_parser(file)
   lines = File.open(file).to_a
   file_name = File.basename(file, ".txt")
 
   lines.each_with_index do |line, idx|
-
     if line.include?("is amended.") || line.include?("is rescinded.")
       key_line = line
       jdx = idx
@@ -15,9 +17,16 @@ def final_orders_parser(file)
         key_line = lines[jdx].gsub("\n", " ") + key_line
       end
 
-      action = line.include?("amended") ? "Amend" : "Rescind"
+      if line.include?("amended")
+        action = "Amend"
+        rule_citation, rule_description = key_line.match(/^(?<CODE>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\s+is amended.$)/).captures
+      elsif line.include?("rescinded")
+        action = "Rescind"
+        rule_citation, rule_description = key_line.match(/^(?<CODE>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\s+is rescinded.$)/).captures
+      end
 
-      add_to_airtable(create_rule(key_line, action, "Final Order", file_name))
+      action = line.include?("amended") ? "Amend" : "Rescind"
+      add_to_airtable(Rule.new(rule_citation, rule_description, action, "Final Order", file_name))
     end
   end
 
@@ -29,7 +38,6 @@ def proposed_orders_parser(file)
   file_name = File.basename(file, ".txt")
 
   lines.each_with_index do |line, idx|
-
     if line.include?("PROPOSED AMENDMENT") || line.include?("PROPOSED RECISSION")
       jdx = idx + 1
       key_line = lines[jdx]
@@ -40,42 +48,22 @@ def proposed_orders_parser(file)
       end
 
       action = line.include?("AMENDMENT") ? "Amend" : "Rescind"
+      rule_citation, rule_description = key_line.match(/^(?<CHAPTER>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\. .+$)/).captures
 
-      add_to_airtable(create_rule(key_line, action, "Proposed (Formal)", file_name))
+      add_to_airtable(Rule.new(rule_citation, rule_description, action, "Proposed (Formal)", file_name))
     end
   end
 
   puts "Proposed rules uploaded to Airtable."
 end
 
-def create_rule(line, action, stage, file_name)
-  rule = {}
-
-  if stage == "Final Order"
-    if action == "Amend"
-      rule[:rule_citation], rule[:rule_description] = line.match(/^(?<CODE>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\s+is amended.$)/).captures
-    elsif action == "Rescind"
-      rule[:rule_citation], rule[:rule_description] = line.match(/^(?<CODE>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\s+is rescinded.$)/).captures
-    end
-
-  elsif stage == "Proposed (Formal)"
-    rule[:rule_citation], rule[:rule_description] = line.match(/^(?<CHAPTER>\d+\s+CSR\s+[-.\d]+)\s+(?<DESCRIPTION>.*?)(?=\. .+$)/).captures
-  end
-
-  rule[:proposed_action] = action
-  rule[:stage] = stage
-  rule[:source] = file_name
-
-  return rule
-end
-
 def add_to_airtable(rule)
   airtableRule = AllSoSData.new(
-    "Rule Citation" => rule[:rule_citation],
-    "Rule Description" => rule[:rule_description],
-    "Proposed Action" => rule[:proposed_action],
-    "Stage" => rule[:stage],
-    "Source" => rule[:source],
+    "Rule Citation" => rule.rule_citation,
+    "Rule Description" => rule.rule_description,
+    "Proposed Action" => rule.proposed_action,
+    "Stage" => rule.stage,
+    "Source" => rule.source,
     "date_added" => Time.now
   )
 
@@ -83,4 +71,4 @@ def add_to_airtable(rule)
 end
 
 final_orders_parser('./files/orders_test_excerpt.txt')
-proposed_orders_parser('./files/proposed_test_excerpt_short.txt')
+# proposed_orders_parser('./files/proposed_test_excerpt_short.txt')
