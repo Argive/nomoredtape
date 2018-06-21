@@ -5,7 +5,8 @@ def final_orders_parser(file)
   file_name = File.basename(file, ".txt")
 
   lines.each_with_index do |line, idx|
-    if line.include?("is amended.")
+
+    if line.include?("is amended.") || line.include?("is rescinded.")
       key_line = line
       jdx = idx
 
@@ -14,18 +15,9 @@ def final_orders_parser(file)
         key_line = lines[jdx].gsub("\n", " ") + key_line
       end
 
-      add_to_airtable(create_rule(key_line, "Amend", "Final Order", file_name))
+      action = line.include?("amended") ? "Amend" : "Rescind"
 
-    elsif line.include?("is rescinded.")
-      key_line = line
-      jdx = idx
-
-      until key_line.include?("CSR")
-        jdx -= 1
-        key_line = lines[jdx].gsub("\n", " ") + key_line
-      end
-
-      add_to_airtable(create_rule(key_line, "Rescind", "Final Order", file_name))
+      add_to_airtable(create_rule(key_line, action, "Final Order", file_name))
     end
   end
 
@@ -37,7 +29,8 @@ def proposed_orders_parser(file)
   file_name = File.basename(file, ".txt")
 
   lines.each_with_index do |line, idx|
-    if line.include?("PROPOSED AMENDMENT")
+
+    if line.include?("PROPOSED AMENDMENT") || line.include?("PROPOSED RECISSION")
       jdx = idx + 1
       key_line = lines[jdx]
 
@@ -46,17 +39,9 @@ def proposed_orders_parser(file)
         key_line = key_line.gsub("\n", " ") + lines[jdx]
       end
 
-      add_to_airtable(create_rule(key_line, "Amend", "Proposed (Formal)", file_name))
-    elsif line.include?("PROPOSED RECISSION")
-      jdx = idx + 1
-      key_line = lines[jdx]
+      action = line.include?("AMENDMENT") ? "Amend" : "Rescind"
 
-      until key_line.include?(". ")
-        jdx += 1
-        key_line = key_line.gsub("\n", " ") + lines[jdx]
-      end
-
-      add_to_airtable(create_rule(key_line, "Rescind", "Proposed (Formal)", file_name))
+      add_to_airtable(create_rule(key_line, action, "Proposed (Formal)", file_name))
     end
   end
 
@@ -98,4 +83,4 @@ def add_to_airtable(rule)
 end
 
 final_orders_parser('./files/orders_test_excerpt.txt')
-# proposed_orders_parser('./files/proposed_test_excerpt_short.txt')
+proposed_orders_parser('./files/proposed_test_excerpt_short.txt')
