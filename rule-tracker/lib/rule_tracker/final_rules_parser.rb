@@ -28,6 +28,9 @@ def final_rules_parser(file)
         rule_citation, rule_description = key_line.match(/^.*(?<CODE>\d+\s+CSR\s+[-.\d\s]+)\s*(?<DESCRIPTION>.*?)(?=\s+is #{action.downcase}ed.+$)/).captures
 
         add_to_airtable(Rule.new(rule_citation, rule_description, action, "Final Order", file_name))
+
+      # rescue errors that require manual review
+      # program continues running by default
       rescue => error
         puts error
         puts "An error has occured on line #{idx} in file #{file_name}."
