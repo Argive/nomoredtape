@@ -14,7 +14,7 @@ def proposed_rules_parser(file)
   puts "Parsing Proposed Rules in #{file_name} ..."
 
   lines.each_with_index do |line, idx|
-    if line.include?("PROPOSED AMENDMENT") || line.include?("PROPOSED RECISSION")
+    if line.include?("PROPOSED AMENDMENT") || line.include?("PROPOSED RESCISSION")
       begin
         jdx = idx
         key_line = lines[jdx]
@@ -27,7 +27,7 @@ def proposed_rules_parser(file)
 
         action = line.include?("AMENDMENT") ? "Amend" : "Rescind"
 
-        rule_citation, rule_description = key_line.match(/^\D*(?<CODE>\d+\s+CSR\s+[-.\d]+)\s*(?<DESCRIPTION>.*?)(?=\. .+$)/).captures
+        rule_citation, rule_description = key_line.match(/^\D*(?<CODE>\d+\s+CSR\s+[-.\d\s]+)\s*(?<DESCRIPTION>.*?)(?=\. .+$)/).captures
         add_to_airtable(Rule.new(rule_citation, rule_description, action, "Proposed (Formal)", file_name))
 
       rescue => error

@@ -25,7 +25,7 @@ def final_rules_parser(file)
         end
 
         action = line.include?("amended") ? "Amend" : "Rescind"
-        rule_citation, rule_description = key_line.match(/^.*(?<CODE>\d+\s+CSR\s+[-.\d]+)\s*(?<DESCRIPTION>.*?)(?=\s+is #{action.downcase}ed.+$)/).captures
+        rule_citation, rule_description = key_line.match(/^.*(?<CODE>\d+\s+CSR\s+[-.\d\s]+)\s*(?<DESCRIPTION>.*?)(?=\s+is #{action.downcase}ed.+$)/).captures
 
         add_to_airtable(Rule.new(rule_citation, rule_description, action, "Final Order", file_name))
       rescue => error
