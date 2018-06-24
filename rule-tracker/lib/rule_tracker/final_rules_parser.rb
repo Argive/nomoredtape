@@ -21,6 +21,8 @@ def final_rules_parser(file)
         until key_line.include?("CSR")
           jdx -= 1
           key_line = lines[jdx].gsub("\n", " ") + key_line
+
+          # throws an error for edge cases, expected incidence <1%
           raise "!-- MANUAL REVIEW REQUIRED --!" if idx - jdx >= error_buffer
         end
 
