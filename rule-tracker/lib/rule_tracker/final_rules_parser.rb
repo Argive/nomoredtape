@@ -6,7 +6,7 @@ require_relative 'Rule'
 def final_rules_parser(file)
   # The numbers of lines a file should read after keywords
   # before throwing an error and prompting manual review.
-  error_buffer = 4
+  error_buffer = 6
 
   lines = File.open(file).to_a
   file_name = File.basename(file, ".txt")

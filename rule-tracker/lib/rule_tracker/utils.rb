@@ -1,8 +1,14 @@
 require 'PDF-Reader'
 
-Dir.entries('../../data/testing').each do |file|
-  if file.include?('pdf')
-    reader = PDF::Reader.new("../../data/testing/#{file}")
-    puts reader.page_count
+counter = 0
+
+Dir.entries('../../data/mo_register/2018').each do |file|
+
+  if file.include?('txt')
+    puts file
+    counter += 1
   end
+
 end
+
+puts counter
