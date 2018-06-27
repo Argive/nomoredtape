@@ -195,10 +195,19 @@ const deptRestrictionsChart = new Chart(deptRestrictions, {
       },
       callbacks: {
         title: function(data) {
-          return `Total: ${addCommas(data[0].yLabel + data[1].yLabel)}`;
+          const multiStringText = [`${addCommas(data[0].yLabel)} (${Math.round(data[0].yLabel / (data[0].yLabel + data[1].yLabel) * 100)}%)`];
+
+          multiStringText.push(`Restrictions Targeted`);
+
+          return multiStringText;
         },
         label: function(tooltipItem, data) {
-          return ` ${addCommas(tooltipItem.yLabel)}`;
+          // return ` ${addCommas(tooltipItem.yLabel)}`;
+          if (tooltipItem.datasetIndex === 0) {
+            return ` ${addCommas(tooltipItem.yLabel)} Remaining`;
+          } else {
+            return ` ${addCommas(tooltipItem.yLabel)} Targeted`;
+          }
         }
       },
       titleFontSize: 17,
