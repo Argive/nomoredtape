@@ -1,0 +1,95 @@
+<!-- BASECODE PROVIDED BY CSS TRICKS !-->
+<!-- https://css-tricks.com/triangle-breadcrumbs/ !-->
+
+<ul class="rule_tracker">
+  <li class="current"><a href="#" title=""><em>Step 3: XXXXXXXX</em><span>Et nequ a quam turpis duisi</span></a></li>
+</ul>
+
+
+
+<style>
+.rule_tracker {
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+}
+.rule_tracker a {
+  color: white;
+  text-decoration: none;
+}
+.rule_tracker em {
+  display: block;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.rule_tracker li {
+  float: left;
+  margin-left: 0;
+  width: 150px; /* 100 / number of rule_tracker */
+  height: 70px; /* total height */
+  list-style-type: none;
+  padding: 5px 5px 5px 30px; /* padding around text, last should include arrow width */
+  border-right: 3px solid white; /* width: gap between arrows, color: background of document */
+  position: relative;
+  /* text-align: center; */
+}
+
+.line_item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* remove extra padding on the first object since it doesn't have an arrow to the left */
+.rule_tracker li:first-child {
+  padding-left: 5px;
+}
+/* white arrow to the left to "erase" background (starting from the 2nd object) */
+.rule_tracker li::before {
+  position: absolute;
+  top:0;
+  left:0;
+  display: block;
+  border-left: 25px solid white; /* width: arrow width, color: background of document */
+  border-top: 40px solid transparent; /* width: half height */
+  border-bottom: 40px solid transparent; /* width: half height */
+  width: 0;
+  height: 0;
+  content: " ";
+}
+/* colored arrow to the right */
+.rule_tracker li::after {
+  z-index: 1; /* need to bring this above the next item */
+  position: absolute;
+  top: 0;
+  right: -25px; /* arrow width (negated) */
+  display: block;
+  border-left: 25px solid #7c8437; /* width: arrow width */
+  border-top: 40px solid transparent; /* width: half height */
+  border-bottom: 40px solid transparent; /* width: half height */
+  width:0;
+  height:0;
+  content: " ";
+}
+
+/* Setup colors (both the background and the arrow) */
+
+/* Completed */
+.rule_tracker li { background-color: #7C8437; }
+.rule_tracker li::after { border-left-color: #7c8437; }
+
+/* Current */
+.rule_tracker li.current { background-color: #C36615; }
+.rule_tracker li.current::after { border-left-color: #C36615; }
+
+/* Following */
+.rule_tracker li.current ~ li { background-color: #EBEBEB; }
+.rule_tracker li.current ~ li::after {	border-left-color: #EBEBEB; }
+
+/* Hover for completed and current */
+.rule_tracker li:hover {background-color: #696}
+.rule_tracker li:hover::after {border-left-color: #696}
+
+
+
+</style>

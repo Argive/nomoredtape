@@ -195,10 +195,8 @@ const deptRestrictionsChart = new Chart(deptRestrictions, {
       },
       callbacks: {
         title: function(data) {
-          const multiStringText = [`${addCommas(data[0].yLabel)} (${Math.round(data[0].yLabel / (data[0].yLabel + data[1].yLabel) * 100)}%)`];
-
-          multiStringText.push(`Restrictions Targeted`);
-
+          if (data.length < 2) return;
+          const multiStringText = [`${addCommas(data[0].yLabel)} (${Math.round(data[0].yLabel / (data[0].yLabel + data[1].yLabel) * 100)}%) Restrictions Targeted`];
           return multiStringText;
         },
         label: function(tooltipItem, data) {
