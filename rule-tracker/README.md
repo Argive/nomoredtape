@@ -1,8 +1,7 @@
 # Live Rule Tracker
 
+![reg_parser](./assets/reg_parser.png)
 ## Proposed Rules Parser
-
-<p align="center"><img width="440" src="./assets/proposed_text.png"></p>
 
 ```ruby
 lines.each_with_index do |line, idx|
@@ -30,7 +29,6 @@ lines.each_with_index do |line, idx|
 ```
 
 ## Final Rules Parser
-<p align="center"><img width="440" src="./assets/final_text.png"></p>
 
 ```ruby
   lines.each_with_index do |line, idx|
