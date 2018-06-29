@@ -2,7 +2,7 @@
 
 ## Proposed Rules Parser
 
-![proposed_text](./assets/proposed_text.png)
+<p align="center"><img width="440" src="./assets/proposed_text.png"></p>
 
 ```ruby
 lines.each_with_index do |line, idx|
@@ -30,8 +30,7 @@ lines.each_with_index do |line, idx|
 ```
 
 ## Final Rules Parser
-
-![final_text](./assets/final_text.png)
+<p align="center"><img width="440" src="./assets/final_text.png"></p>
 
 ```ruby
   lines.each_with_index do |line, idx|
