@@ -57,7 +57,7 @@ const ruleTrackerChart = new Chart(ruleTracker, {
     title: {
       display: true,
       text: 'Tracking the Formal Rulemaking Process',
-      fontFamily: "'Average, sans-serif'",
+      fontFamily: "'Average', 'sans-serif'",
       fontSize: 28,
     },
     legend: {
@@ -67,6 +67,9 @@ const ruleTrackerChart = new Chart(ruleTracker, {
         fontFamily: "'Average', 'sans-serif'",
         fontSize: 17,
         fontStyle: 'bold'
+      },
+      onClick: function() {
+        return;
       }
     },
     maintainAspectRatio: false,
@@ -100,6 +103,9 @@ const ruleTrackerChart = new Chart(ruleTracker, {
     },
     tooltips: {
       mode: 'nearest',
+      xPadding: 12,
+      yPadding: 12,
+      displayColors: false,
       itemSort: function(a, b) {
         return b.datasetIndex - a.datasetIndex;
       },
@@ -108,6 +114,30 @@ const ruleTrackerChart = new Chart(ruleTracker, {
         title: function(data) {
           return;
         },
+        label: function(tooltipItem, data) {
+          // return ` ${addCommas(tooltipItem.yLabel)}`;
+          const ruleCounts = data.datasets.map(dataset => {
+            return dataset.data[0];
+          })
+
+          const totalCount = ruleCounts.reduce((acc, current) => {
+            return acc + current;
+          });
+
+          if (tooltipItem.datasetIndex === 0) {
+            const multiStringText = ['Proposed (Informal)'];
+            multiStringText.push(`${addCommas(tooltipItem.xLabel)} rules (${Math.round((tooltipItem.xLabel / totalCount) * 100)}%)`);
+            return multiStringText;
+          } else if (tooltipItem.datasetIndex === 1) {
+            const multiStringText = ['Proposed (Formal)'];
+            multiStringText.push(`${addCommas(tooltipItem.xLabel)} rules (${Math.round((tooltipItem.xLabel / totalCount) * 100)}%)`);
+            return multiStringText;
+          } else {
+            const multiStringText = ['Final Order'];
+            multiStringText.push(`${addCommas(tooltipItem.xLabel)} rules (${Math.round((tooltipItem.xLabel / totalCount) * 100)}%)`);
+            return multiStringText;
+          }
+        }
       },
       titleFontSize: 17,
       titleFontFamily: "'Average', 'sans-serif'",
