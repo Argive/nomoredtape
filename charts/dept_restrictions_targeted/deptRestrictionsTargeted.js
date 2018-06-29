@@ -1,9 +1,9 @@
-const deptRestrictions = document.getElementById("dept_restrictions_targeted");
-
 // Thank you, Elias Zamaria!
 const addCommas = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
+const deptRestrictions = document.getElementById("dept_restrictions_targeted");
 
 const deptRestrictionsChart = new Chart(deptRestrictions, {
   type: 'bar',
@@ -18,6 +18,7 @@ const deptRestrictionsChart = new Chart(deptRestrictions, {
       "Transportation",
       "Labor/Industrial Relations",
       "Insurance",
+      "Corrections",
       "Elementary/Secondary Education",
       "Agriculture",
       "Health/Senior Services",
@@ -25,7 +26,6 @@ const deptRestrictionsChart = new Chart(deptRestrictions, {
       "Economic Development",
       "Office of Administration",
       "Conservation",
-      "Corrections",
     ],
     datasets: [
       {
@@ -40,6 +40,7 @@ const deptRestrictionsChart = new Chart(deptRestrictions, {
           1703,
           2117,
           19270,
+          171,
           1824,
           4738,
           16233,
@@ -47,7 +48,6 @@ const deptRestrictionsChart = new Chart(deptRestrictions, {
           7384,
           2150,
           1100,
-          171
         ],
         backgroundColor: [
           "rgba(32,97,119, 0.2)",
@@ -101,6 +101,7 @@ const deptRestrictionsChart = new Chart(deptRestrictions, {
           475,
           229,
           95,
+          65,
           36,
           27,
           0,
@@ -108,7 +109,6 @@ const deptRestrictionsChart = new Chart(deptRestrictions, {
           0,
           0,
           0,
-          0
         ],
         backgroundColor: [
           'rgba(224,19,4, 0.2)',
