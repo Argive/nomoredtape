@@ -1,9 +1,9 @@
-const ruleTracker = document.getElementById("rule_tracker");
-
 // Thank you, Elias Zamaria!
 const addCommas = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
+const ruleTracker = document.getElementById("rule_tracker");
 
 const ruleTrackerChart = new Chart(ruleTracker, {
   type: 'horizontalBar',
@@ -54,9 +54,15 @@ const ruleTrackerChart = new Chart(ruleTracker, {
     ]
   },
   options: {
+    title: {
+      display: true,
+      text: 'Tracking the Formal Rulemaking Process',
+      fontFamily: "'Average, sans-serif'",
+      fontSize: 28,
+    },
     legend: {
       reverse: false,
-      position: 'bottom',
+      position: 'top',
       labels: {
         fontFamily: "'Average', 'sans-serif'",
         fontSize: 17,
