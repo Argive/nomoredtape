@@ -2,6 +2,7 @@
 # ensure it remains in .gitignore regardless of file path
 require_relative 'config'
 require_relative 'Rule'
+require_relative 'add_to_airtable'
 
 def final_rules_parser(file)
   # The numbers of lines a file should read after keywords
@@ -23,11 +24,14 @@ def final_rules_parser(file)
           key_line = lines[jdx].gsub("\n", " ") + key_line
 
           # throws an error for edge cases, expected incidence <1%
-          raise "!-- MANUAL REVIEW REQUIRED --!" if idx - jdx >= error_buffer
+          raise "!-- MANUAL REVIEW REQUIRED: Error Buffer Exceeded --!" if idx - jdx >= error_buffer
         end
 
         action = line.include?("amended") ? "Amend" : "Rescind"
-        rule_citation, rule_description = key_line.match(/^.*(?<CODE>\d+\s+CSR\s+[-.\d\s]+)\s*(?<DESCRIPTION>.*?)(?=\s+is #{action.downcase}ed.+$)/).captures
+        regexp = key_line.match(/^.*(?<CODE>\d+\s+CSR\s+[-.\d\s]+)\s*(?<DESCRIPTION>.*?)(?=\s+is #{action.downcase}ed.+$)/)
+        raise "!-- MANUAL REVIEW REQUIRED: RegExp Returned nil --!" if regexp.nil?
+
+        rule_citation, rule_description = regexp.captures
 
         add_to_airtable(Rule.new(rule_citation, rule_description, action, "Final Order", file_name))
 
@@ -46,17 +50,4 @@ def final_rules_parser(file)
   end
 
   puts "Final rules uploaded to Airtable."
-end
-
-def add_to_airtable(rule)
-  airtableRule = AllSoSData.new(
-    "Rule Citation" => rule.rule_citation,
-    "Rule Description" => rule.rule_description,
-    "Proposed Action" => rule.proposed_action,
-    "Stage" => rule.stage,
-    "Source" => rule.source,
-    "date_added" => Time.now
-  )
-
-  airtableRule.create
 end

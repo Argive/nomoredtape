@@ -21,5 +21,6 @@ Dir.entries("../data/mo_register/#{year}").each do |file|
   end
 end
 
-
+# for manual testing: 
+# final_rules_parser('../data/testing/15-jun-18_final-TEST.txt')
 # proposed_rules_parser('../data/mo_register/2018/2018-06-15_proposed.txt')
