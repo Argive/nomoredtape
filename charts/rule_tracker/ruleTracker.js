@@ -15,7 +15,7 @@ const ruleTrackerChart = new Chart(ruleTracker, {
       {
         label: ' Proposed (Informal)',
         data: [
-          116,
+          290,
         ],
         backgroundColor: [
           'rgba(224,19,4, 0.2)',
@@ -28,7 +28,7 @@ const ruleTrackerChart = new Chart(ruleTracker, {
       {
         label: ' Proposed (Formal)',
         data: [
-          323,
+          363,
         ],
         backgroundColor: [
           'rgba(255,208,0, 0.2)',
@@ -41,7 +41,7 @@ const ruleTrackerChart = new Chart(ruleTracker, {
       {
         label: ' Final Order',
         data: [
-          55,
+          125,
         ],
         backgroundColor: [
           "rgba(32,97,119, 0.2)",
