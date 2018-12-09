@@ -153,7 +153,17 @@ const deptRestrictionsChart = new Chart(deptRestrictions, {
     ]
   },
   options: {
+    title: {
+      display: true,
+      text: 'Restrictions Targeted in Missouri by Agency',
+      fontSize: 24,
+      fontFamily: "'Average', 'serif'"
+    },
+    animation: {
+      duration: 3000,
+    },
     legend: {
+      display: true,
       reverse: true,
       labels: {
         fontFamily: "'Average', 'sans-serif'",

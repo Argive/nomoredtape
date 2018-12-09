@@ -93,13 +93,15 @@ const deptCommentsChart = new Chart(deptComments, {
     title: {
       display: true,
       text: '4550 Public Comments Collected',
-      fontFamily: "'Fjalla One', sans-serif",
-      fontSize: 28,
-      padding: 15
+      fontFamily: "serif",
+      fontSize: 24
     },
     maintainAspectRatio: false,
     legend: {
       display: false
+    },
+    animation: {
+      duration: 3000,
     },
     scales: {
       xAxes: [{

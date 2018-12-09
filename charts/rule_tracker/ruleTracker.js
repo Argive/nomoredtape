@@ -7,6 +7,10 @@ const ruleTracker = document.getElementById("rule_tracker");
 
 const ruleTrackerChart = new Chart(ruleTracker, {
   type: 'horizontalBar',
+  animation: {
+    duration: 3000
+  },
+
   data: {
     labels: [
       "All Rule Changes",
@@ -15,7 +19,7 @@ const ruleTrackerChart = new Chart(ruleTracker, {
       {
         label: ' Proposed (Informal)',
         data: [
-          290,
+          189,
         ],
         backgroundColor: [
           'rgba(224,19,4, 0.2)',
@@ -28,7 +32,7 @@ const ruleTrackerChart = new Chart(ruleTracker, {
       {
         label: ' Proposed (Formal)',
         data: [
-          363,
+          412,
         ],
         backgroundColor: [
           'rgba(255,208,0, 0.2)',
@@ -41,7 +45,7 @@ const ruleTrackerChart = new Chart(ruleTracker, {
       {
         label: ' Final Order',
         data: [
-          125,
+          177,
         ],
         backgroundColor: [
           "rgba(32,97,119, 0.2)",
